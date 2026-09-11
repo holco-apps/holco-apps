@@ -61,5 +61,6 @@ isolés qui peuvent être audités sans exposer un client ni son processus méti
 Les données clients, secrets, configurations de production, historiques
 internes et règles propriétaires restent privés.
 
-HOLCO INVEST · Paris · [alan@holco.co](mailto:alan@holco.co)  
+HOLCO INVEST · Paris · [alan@holco.co](mailto:alan@holco.co)
+
 DPO : Pierre Coquard · [privacy@holco.co](mailto:privacy@holco.co)
