@@ -1,63 +1,73 @@
 # HOLCO
 
-> Custom AI engineering for executives. Paris, France.
+HOLCO conçoit et exploite des connecteurs et agents IA pour rendre les données
+métier utilisables depuis les assistants déjà choisis par une entreprise. Le
+travail porte autant sur les contrôles, les droits et la traçabilité que sur la
+restitution conversationnelle.
 
-We build conversational AI agents that plug into the systems an operator already runs (CRM, ERP, accounting, retail data, mailbox) and expose them as **direct, real-time queries** — chat, voice, recurring email, alerts, or dedicated cockpit apps. The executive asks; the AI answers in 6 to 10 seconds, with sources.
+- Site : [holco.co](https://holco.co)
+- Lab technique : [apps.holco.co](https://apps.holco.co)
+- Documentation MCP : [holco.co/mcp/docs](https://holco.co/mcp/docs/)
+- État des services : [holco.co/status](https://holco.co/status/)
+- Signalement de sécurité : [security.txt](https://holco.co/.well-known/security.txt)
+- Entité juridique : HOLCO INVEST, SIREN 819 582 453, RCS Paris
+- Contact sécurité et RGPD : `privacy@holco.co`
 
-We are agnostic on the AI engine (Anthropic Claude, Mistral, OpenAI) and opinionated on the way data flows. No customer data on our side. Tokens stay on the user's workstation. Read-only by default; write tools require a mandatory preview → commit pattern.
+## Projets publics
 
-- **Site:** [holco.co](https://holco.co) (FR) · [apps.holco.co](https://apps.holco.co) (EN tech docs)
-- **Machine-readable:** [llms.txt](https://holco.co/llms.txt) · [humans.txt](https://holco.co/humans.txt) · [/.well-known/mcp-server.json](https://holco.co/.well-known/mcp-server.json) · [/dev](https://holco.co/dev) · [/status](https://holco.co/status)
-- **Sectors:** Media & AdTech · Finance · Preventive health
-- **Legal entity:** HOLCO INVEST, SIREN 819 582 453, RCS Paris
+### [PennyPilot MCP](https://github.com/holco-apps/pennypilot-mcp)
 
----
+Contrats publics, documentation d'intégration et garde-fous vérifiables du
+connecteur comptable HOLCO. Le service distant et sa logique cabinet restent
+propriétaires. Le serveur public est déclaré dans le
+[registre MCP](https://registry.modelcontextprotocol.io/?search=pennypilot).
 
-## Public projects
+### [openRMN](https://github.com/holco-apps/openrmn)
 
-### [pennypilot](https://github.com/holco-apps/pennypilot) — MCP server for Pennylane
+Couche indépendante de mesure Retail Media. Elle harmonise plusieurs sources,
+calcule des indicateurs déterministes et expose une surface MCP. Licence MIT.
 
-MCP (Model Context Protocol) extension that bridges Claude Desktop — and soon Mistral Le Chat and ChatGPT Business — directly to Pennylane Company API v2 for French accounting firms. Generates the monthly closing memo in ~8 seconds instead of 1h30. **13 read-only tools** covering the full general ledger: journals (VE/AC/BQ/OD), French PCG chart of accounts, per-account ledger with running balance, pending lettering on 411\*/401\*, audit trail via `/ledger_entry_line_changes`, fiscal years.
+### [PennyLane Cabinet](https://github.com/holco-apps/pennylane-cabinet)
 
-Listed on the official **MCP Registry** as [`io.github.holco-apps/pennypilot`](https://registry.modelcontextprotocol.io/?search=pennypilot). v0.2.6. 49 tests. Bundle SHA-256 published. CI green on Node 20 + 22.
+Extension locale historique pour Claude Desktop, limitée à des outils
+Pennylane en lecture seule. Le service remote actuel est documenté séparément.
 
-Notable design choices: context-guard before heavy analysis (auto-detect SIREN + NAF via Etalab open data), in-flight dedup and 4-way concurrency gate on the Pennylane client, request-ID propagation (client `pp-<hex>` + server id) injected into error messages, lazy `stream()` pipeline on top of cursor pagination.
+## Architecture observable
 
-> `mcp` · `model-context-protocol` · `anthropic` · `claude-desktop` · `pennylane` · `accounting` · `france` · `nodejs` · `typescript`
+Le [Lab HOLCO](https://apps.holco.co) décrit l'architecture réellement opérée
+et distingue les mécanismes en service de la feuille de route :
 
-### [openrmn](https://github.com/holco-apps/openrmn) — Independent retail media analytics
+- frontend Next.js, React et TypeScript exporté statiquement ;
+- services Node.js et Python/FastAPI selon les produits ;
+- nginx en frontal TLS et services gérés par systemd ;
+- SQLite en mode WAL et PostgreSQL selon les usages ;
+- connecteurs MCP, OAuth et API avec périmètres d'accès séparés ;
+- contrôles déterministes, journalisation technique et validation humaine pour
+  les décisions engageantes.
 
-Unifies Amazon Ads, Carrefour Links, Citrus and Promo Intelligence into a single schema (`UnifiedRow`), computes deterministic KPIs, neutrality audit, Trust Score per network, double-counting audit and harmonisation simulator. The full analytics surface is also exposed as an MCP server, queryable from Claude Desktop, Claude Code, or any MCP-compatible agent. Live demo: [lab.holco.co/retail-audience](https://lab.holco.co/retail-audience).
+Les versions courantes, les flux de données et les limites connues sont publiés
+dans le Lab plutôt que recopiés ici afin d'éviter plusieurs références
+contradictoires.
 
-> `mcp` · `retail-media` · `attribution` · `amazon-ads` · `python` · `streamlit`
+## Sécurité et données
 
----
+Les engagements dépendent du produit et du mandat client. Les connecteurs
+comptables publiés comme tels sont conçus en lecture seule. Les secrets sont
+séparés des dépôts, les jetons serveur sont chiffrés au repos et les services
+applicatifs restent derrière le reverse proxy. Les traitements, durées de
+conservation et rôles RGPD sont détaillés dans la
+[politique de confidentialité](https://holco.co/confidentialite/) et dans la
+[documentation sécurité](https://holco.co/securite/).
 
-## Closed-source products (live, real users)
+HOLCO ne présente pas un prototype, une cible ou une compatibilité envisagée
+comme une capacité déjà généralisée. Les données clients et la logique métier
+propriétaire ne sont pas publiées dans cette organisation GitHub.
 
-- **[AEObrand](https://holco.co/aeobrand/)** — measures how cosmetic brands surface inside conversational AI engines (ChatGPT, Gemini, Claude). MVP in production.
-- **[MyCFO FEC](https://mycfofec.pro)** — generates commercial proposals for accounting firms from a French FEC ledger. Beta.
-- **[ALIM.care](https://alim.care)** — clinical prescription-support tool for doctors and dietitians.
-- **[Oyya](https://oyya.fr)** — naturopath AI platform.
-- **Clarislab** — conversational explainer for blood test results.
-- **[Undone Project](https://undoneproject.com)** — longevity community.
+## Politique de publication
 
----
+Nous publions les contrats, exemples et composants qui peuvent être audités
+sans exposer les données d'un client ni son processus métier. Les services,
+secrets, configurations de production et règles propres aux clients restent
+privés.
 
-## Who builds this
-
-Founded and coded by **Pierre Coquard** (ESSEC Business School). Twenty years as an operator before HOLCO: ex-CEO of a Euronext-listed media group (**New Planet Media**, 2019–2022), co-founder of **R-TARGET** (real-time email targeting, tripled revenue in 2 years, acquired by **CCM Benchmark**), Director Sales Division at **Groupe Figaro** (2015–2018). The production code is written by the founder.
-
-Contact: `alan@holco.co` (supervised assistant + team routing) · `pierre@holco.co` (founder, direct).
-
----
-
-## Engineering principles
-
-1. Customer data never transits HOLCO infrastructure. Tokens stay on the user's workstation. We hash, we don't store.
-2. Read-only by default. Write tools require a preview → commit pattern with an explicit user confirmation.
-3. Context before analysis. We ask, we don't pretend.
-4. Numbers, not adjectives. Every claim ships with the SQL, the endpoint or the timestamp that produced it.
-5. We optimise for the person reading the answer at 22:00, not for the demo on the projector at 14:00.
-6. If the LLM cannot explain it in plain French to the user, we don't ship it.
-7. Public source for everything that does not encode a client's process. Proprietary for everything that does.
+Contact : `alan@holco.co` · DPO : Pierre Coquard (`privacy@holco.co`).
