@@ -14,23 +14,23 @@ et validation humaine lorsque la décision engage l'entreprise.
 
 ## Open engineering
 
-### [HOLCO Finance Evals](https://github.com/holco-apps/holco-finance-evals)
+### [HOLCO Finance Controls](https://github.com/holco-apps/holco-finance-controls)
 
-Un benchmark public, petit et reproductible, pour vérifier qu'un agent
-financier respecte les chiffres, les sources et les règles métier — et pas
-seulement qu'il formule une réponse crédible.
+Un cadre public, petit et reproductible, pour contrôler qu'un agent financier
+respecte les chiffres, les sources et les règles métier, et pas seulement qu'il
+formule une réponse crédible.
 
 Le dépôt fournit un Golden Set synthétique, des contrôles déterministes, des
-résultats `PASS` / `REVIEW` / `FAIL`, une suite de tests Python et une politique
-explicite d'escalade humaine. Aucun code de production ni donnée client n'y est
-publié.
+résultats `PASS` / `REVIEW` / `FAIL` / `INCONCLUSIVE` / `NOT_RUN`, un protocole
+de preuve, une suite de tests Python et une politique explicite d'escalade
+humaine. Aucun code de production ni donnée client n'y est publié.
 
 ```mermaid
 flowchart LR
   A[Financial workflow] --> B[Deterministic checks]
   B --> C[Source checks]
   C --> D[Business rules]
-  D --> E[AI evaluator]
+  D --> E[Labelled AI review]
   E --> F[Human review]
   F --> G[Regression suite]
 ```
@@ -45,7 +45,7 @@ aucun chemin arbitraire et ne prétend pas certifier la conformité fiscale.
 
 - des connecteurs MCP et API avec permissions et périmètres explicites ;
 - des contrôles déterministes séparés de la génération probabiliste ;
-- des évaluations fondées sur les sources, les nombres et les règles métier ;
+- des contrôles fondés sur les sources, les nombres et les règles métier ;
 - du context engineering, de la mémoire gouvernée et des traces auditables ;
 - des parcours human-in-the-loop pour les décisions engageantes.
 
@@ -56,7 +56,7 @@ statut ; une feuille de route n'est pas présentée comme une capacité acquise.
 
 ## Publication responsable
 
-Nous publions des benchmarks synthétiques, contrats, exemples et composants
+Nous publions des jeux de contrôle synthétiques, contrats, exemples et composants
 isolés qui peuvent être audités sans exposer un client ni son processus métier.
 Les données clients, secrets, configurations de production, historiques
 internes et règles propriétaires restent privés.
