@@ -35,11 +35,11 @@ flowchart LR
   F --> G[Regression suite]
 ```
 
-### [openRMN](https://github.com/holco-apps/openrmn)
+### [HOLCO FEC Controls](https://github.com/holco-apps/holco-fec-controls)
 
-Une couche indépendante de mesure Retail Media qui harmonise plusieurs
-sources, calcule des indicateurs déterministes et expose une surface MCP.
-Licence MIT.
+Des contrôles déterministes et explicables de données FEC synthétiques,
+exposés par un serveur MCP local compatible avec Claude. Le serveur ne lit
+aucun chemin arbitraire et ne prétend pas certifier la conformité fiscale.
 
 ## Ce que nous construisons
 
