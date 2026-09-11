@@ -1,73 +1,65 @@
 # HOLCO
 
-HOLCO conçoit et exploite des connecteurs et agents IA pour rendre les données
-métier utilisables depuis les assistants déjà choisis par une entreprise. Le
-travail porte autant sur les contrôles, les droits et la traçabilité que sur la
-restitution conversationnelle.
+HOLCO construit une couche d'intelligence et de contrôle pour les opérations
+financières : accès gouverné aux données, contrôles reproductibles, agents IA
+et validation humaine lorsque la décision engage l'entreprise.
 
-- Site : [holco.co](https://holco.co)
-- Lab technique : [apps.holco.co](https://apps.holco.co)
-- Documentation MCP : [holco.co/mcp/docs](https://holco.co/mcp/docs/)
-- État des services : [holco.co/status](https://holco.co/status/)
-- Signalement de sécurité : [security.txt](https://holco.co/.well-known/security.txt)
-- Entité juridique : HOLCO INVEST, SIREN 819 582 453, RCS Paris
-- Contact sécurité et RGPD : `privacy@holco.co`
+> Deterministic when possible. AI when necessary. Human when accountable.
 
-## Projets publics
+- [Site](https://holco.co)
+- [Lab technique](https://apps.holco.co)
+- [État des services](https://holco.co/status/)
+- [Documentation sécurité](https://holco.co/securite/)
+- [Signalement de sécurité](https://holco.co/.well-known/security.txt)
 
-### [PennyPilot MCP](https://github.com/holco-apps/pennypilot-mcp)
+## Open engineering
 
-Contrats publics, documentation d'intégration et garde-fous vérifiables du
-connecteur comptable HOLCO. Le service distant et sa logique cabinet restent
-propriétaires. Le serveur public est déclaré dans le
-[registre MCP](https://registry.modelcontextprotocol.io/?search=pennypilot).
+### [HOLCO Finance Evals](https://github.com/holco-apps/holco-finance-evals)
+
+Un benchmark public, petit et reproductible, pour vérifier qu'un agent
+financier respecte les chiffres, les sources et les règles métier — et pas
+seulement qu'il formule une réponse crédible.
+
+Le dépôt fournit un Golden Set synthétique, des contrôles déterministes, des
+résultats `PASS` / `REVIEW` / `FAIL`, une suite de tests Python et une politique
+explicite d'escalade humaine. Aucun code de production ni donnée client n'y est
+publié.
+
+```mermaid
+flowchart LR
+  A[Financial workflow] --> B[Deterministic checks]
+  B --> C[Source checks]
+  C --> D[Business rules]
+  D --> E[AI evaluator]
+  E --> F[Human review]
+  F --> G[Regression suite]
+```
 
 ### [openRMN](https://github.com/holco-apps/openrmn)
 
-Couche indépendante de mesure Retail Media. Elle harmonise plusieurs sources,
-calcule des indicateurs déterministes et expose une surface MCP. Licence MIT.
+Une couche indépendante de mesure Retail Media qui harmonise plusieurs
+sources, calcule des indicateurs déterministes et expose une surface MCP.
+Licence MIT.
 
-### [PennyLane Cabinet](https://github.com/holco-apps/pennylane-cabinet)
+## Ce que nous construisons
 
-Extension locale historique pour Claude Desktop, limitée à des outils
-Pennylane en lecture seule. Le service remote actuel est documenté séparément.
+- des connecteurs MCP et API avec permissions et périmètres explicites ;
+- des contrôles déterministes séparés de la génération probabiliste ;
+- des évaluations fondées sur les sources, les nombres et les règles métier ;
+- du context engineering, de la mémoire gouvernée et des traces auditables ;
+- des parcours human-in-the-loop pour les décisions engageantes.
 
-## Architecture observable
+Notre socle associe TypeScript, Node.js et Python/FastAPI selon les produits,
+avec des services isolés derrière TLS. Les capacités réellement opérées, leurs
+limites et l'état des services sont documentés dans le Lab et sur la page de
+statut ; une feuille de route n'est pas présentée comme une capacité acquise.
 
-Le [Lab HOLCO](https://apps.holco.co) décrit l'architecture réellement opérée
-et distingue les mécanismes en service de la feuille de route :
+## Publication responsable
 
-- frontend Next.js, React et TypeScript exporté statiquement ;
-- services Node.js et Python/FastAPI selon les produits ;
-- nginx en frontal TLS et services gérés par systemd ;
-- SQLite en mode WAL et PostgreSQL selon les usages ;
-- connecteurs MCP, OAuth et API avec périmètres d'accès séparés ;
-- contrôles déterministes, journalisation technique et validation humaine pour
-  les décisions engageantes.
+Nous publions des benchmarks synthétiques, contrats, exemples et composants
+isolés qui peuvent être audités sans exposer un client ni son processus métier.
+Les données clients, secrets, configurations de production, historiques
+internes et règles propriétaires restent privés.
 
-Les versions courantes, les flux de données et les limites connues sont publiés
-dans le Lab plutôt que recopiés ici afin d'éviter plusieurs références
-contradictoires.
-
-## Sécurité et données
-
-Les engagements dépendent du produit et du mandat client. Les connecteurs
-comptables publiés comme tels sont conçus en lecture seule. Les secrets sont
-séparés des dépôts, les jetons serveur sont chiffrés au repos et les services
-applicatifs restent derrière le reverse proxy. Les traitements, durées de
-conservation et rôles RGPD sont détaillés dans la
-[politique de confidentialité](https://holco.co/confidentialite/) et dans la
-[documentation sécurité](https://holco.co/securite/).
-
-HOLCO ne présente pas un prototype, une cible ou une compatibilité envisagée
-comme une capacité déjà généralisée. Les données clients et la logique métier
-propriétaire ne sont pas publiées dans cette organisation GitHub.
-
-## Politique de publication
-
-Nous publions les contrats, exemples et composants qui peuvent être audités
-sans exposer les données d'un client ni son processus métier. Les services,
-secrets, configurations de production et règles propres aux clients restent
-privés.
-
-Contact : `alan@holco.co` · DPO : Pierre Coquard (`privacy@holco.co`).
+HOLCO INVEST · Paris · [alan@holco.co](mailto:alan@holco.co)  
+DPO : Pierre Coquard · [privacy@holco.co](mailto:privacy@holco.co)
